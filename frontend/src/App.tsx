@@ -1,13 +1,16 @@
-import React from 'react';
+import Header from "./Header"
 
+import CreateTransaction from "./CreateTransaction"
 
 function App() {
-  return (
-    <div className="App">
-      <h1>Finance Tracker</h1>
-      <p>Velkommen til min webapp!</p>
-    </div>
-  );
+  return(
+    <>
+      <Header/>
+      <CreateTransaction/>
+    </>
+    
+  )
+  
 }
 
-export default App;
+export default App
