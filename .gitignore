@@ -1,0 +1,20 @@
+# Java (Gradle)
+backend/build/
+backend/out/
+backend/.gradle/
+*.iml
+*.log
+
+# IntelliJ
+.idea/
+
+# VSCode
+.vscode/
+
+# Node.js (React frontend)
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# macOS
+.DS_Store
