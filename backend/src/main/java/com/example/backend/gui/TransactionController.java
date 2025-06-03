@@ -19,21 +19,21 @@ public class TransactionController {
         this.transactionRepository = transactionRepository;
     }
 
-    // POST /transactions - Opret ny transaction
+
     @PostMapping
     public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
         Transaction saved = transactionRepository.save(transaction);
         return ResponseEntity.status(201).body(saved); // 201 Created
     }
 
-    // GET /transactions - Hent alle transactions
+
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactions() {
         List<Transaction> transactions = transactionRepository.findAll();
         return ResponseEntity.ok(transactions); // 200 OK
     }
 
-    // GET /transactions/{id} - Hent én transaction baseret på ID
+
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransactionById(@PathVariable Long id) {
         return transactionRepository.findById(id)
@@ -41,7 +41,7 @@ public class TransactionController {
                 .orElseGet(() -> ResponseEntity.notFound().build()); // 404 Not Found
     }
 
-    // PUT /transactions/{id} - Opdater eksisterende transaction
+
     @PutMapping("/{id}")
     public ResponseEntity<Transaction> updateTransaction(@PathVariable Long id, @RequestBody Transaction updatedTransaction) {
         return transactionRepository.findById(id)
@@ -57,7 +57,7 @@ public class TransactionController {
     }
 
 
-    // DELETE /transactions/{id} - Slet transaction
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
         if (transactionRepository.existsById(id)) {

@@ -1,126 +1,86 @@
-import { useState, useEffect } from "react";
-
-type TransactionType = "EXPENSE" | "EARNING";
-
-interface Category {
-  id: number;
-  name: string;
-}
+import React from "react";
 
 function CreateTransaction() {
-  const [amount, setAmount] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [type, setType] = useState<TransactionType>("EXPENSE");
-  const [categoryId, setCategoryId] = useState<number>();
-  const [categories, setCategories] = useState<Category[]>([]);
 
-  useEffect(() => {
-    // Hent kategorier fra backend
-    fetch("/api/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.error("Error loading categories", err));
-  }, []);
+  const [selectedCategory, setSelectedCategory] = React.useState<string>("");
+  const [type, setType] = React.useState<"EXPENSE" | "EARNING">("EXPENSE");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const transaction = {
-      amount: parseFloat(amount),
-      date,
-      description,
-      type,
-      category: {
-        id: categoryId,
-      },
-    };
-
-    fetch("/api/transactions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(transaction),
-    })
-      .then((res) => {
-        if (res.ok) {
-          alert("Transaction created!");
-          // Reset form or redirect
-        } else {
-          throw new Error("Failed to create transaction");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Error creating transaction");
-      });
+  const saveTransaction = () => {
+    console.log("Saving transaction with category:", selectedCategory);
   };
 
   return (
-    <div>
+    <div className="CreateTransactionBox">
       <h2>Create Transaction</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Amount:</label>
-          <input
-            type="number"
-            step="0.01"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-          />
-        </div>
+      <SelectCategory selected={selectedCategory} setSelected={setSelectedCategory} />
+      <SelectType type={type} setType={setType} />
+      <button onClick={saveTransaction}>Save Transaction</button>
+    </div>
+  );
+}
 
-        <div>
-          <label>Date:</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </div>
+type Category = {
+  id: number;
+  name: string;
+};
 
-        <div>
-          <label>Description:</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-        </div>
+type CategoryProps = {
+  selected: string;
+  setSelected: (value: string) => void;
+};
 
-        <div>
-          <label>Type:</label>
-          <select value={type} onChange={(e) => setType(e.target.value as TransactionType)}>
-            <option value="EXPENSE">Expense</option>
-            <option value="EARNING">Earning</option>
-          </select>
-        </div>
 
-        <div>
-          <label>Category:</label>
-          <select
-            value={categoryId}
-            onChange={(e) => setCategoryId(parseInt(e.target.value))}
-            required
-          >
-            <option value="">Select a category</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
 
-        <button type="submit">Save</button>
-      </form>
+function SelectCategory({ selected, setSelected }: CategoryProps) {
+  const [categories, setCategories] = React.useState<Category[]>([]);
+
+  React.useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/categories", {
+          method: "GET",
+          headers: { accept: "application/json" },
+        });
+        const data = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Could not load categories", err);
+      }
+    }
+
+    fetchCategories();
+  }, []);
+
+  return (
+    <div className="SelectCategory">
+      <label>Category:</label>
+      <select value={selected} onChange={(e) => setSelected(e.target.value)}>
+        <option value="">No Category</option>
+        {categories.map((cat) => (
+          <option key={cat.id} value={cat.id.toString()}>
+            {cat.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
 
 
+type TypeProps = {
+  type: "EXPENSE" | "EARNING";
+  setType: (t: "EXPENSE" | "EARNING") => void;
+};
+
+function SelectType({ type, setType }: TypeProps) {
+  return (
+    <div className="SelectType">
+      <label>Type:</label>
+      <select value={type} onChange={(e) => setType(e.target.value as "EXPENSE" | "EARNING")}>
+        <option value="EXPENSE">Expense</option>
+        <option value="INCOME">Income</option>
+      </select>
+    </div>
+  );
+}
 export default CreateTransaction;
