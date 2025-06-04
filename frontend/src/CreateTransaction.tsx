@@ -14,9 +14,9 @@ function CreateTransaction() {
     <div className="CreateTransactionBox">
       <h2>Create Transaction</h2>
       <AddAmount amount={amount} setAmount={setAmount} />
-      <SelectDate date={date} setDate={setDate}/>
-      <SelectCategory selected={selectedCategory} setSelected={setSelectedCategory} />
       <SelectType type={type} setType={setType} />
+      <SelectDate date={date} setDate={setDate}/>
+      <SelectCategory selected={selectedCategory} setSelected={setSelectedCategory} type={type} />
       <AddDescription description={description} setDescription={setDescription}/>
       <SaveTransactionButton
         amount={amount}
@@ -45,6 +45,24 @@ function AddAmount({ amount, setAmount }: { amount: number; setAmount: (value: n
   );
 }
 
+type TypeProps = {
+  type: "EXPENSE" | "EARNING";
+  setType: (t: "EXPENSE" | "EARNING") => void;
+};
+
+function SelectType({ type, setType }: TypeProps) {
+  return (
+    <div className="SelectType">
+      <label>Type:</label>
+      <select value={type} onChange={(e) => setType(e.target.value as "EXPENSE" | "EARNING")}>
+        <option value="">-- Choose Type --</option>
+        <option value="EXPENSE">Expense</option>
+        <option value="EARNING">Earning</option>
+      </select>
+    </div>
+  );
+}
+
 
 
 
@@ -61,8 +79,13 @@ function SelectDate({ date, setDate }: { date: Date; setDate: (value: Date) => v
   );
 }
 
+type CategoryProps = {
+  selected: string;
+  setSelected: (value: string) => void;
+  type: "EXPENSE" | "EARNING";
+};
 
-function SelectCategory({ selected, setSelected }: {selected: string; setSelected: (value: string) => void;}) {
+function SelectCategory({ selected, setSelected, type}: CategoryProps) {
 
   type Category = {
     id: number;
@@ -73,7 +96,7 @@ function SelectCategory({ selected, setSelected }: {selected: string; setSelecte
   React.useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch("/categories", {
+        const res = await fetch(`/categories?type=${type}`, {
           method: "GET",
           headers: { accept: "application/json" },
         });
@@ -83,14 +106,16 @@ function SelectCategory({ selected, setSelected }: {selected: string; setSelecte
         console.error("Could not load categories", err);
       }
     }
-
+  
     fetchCategories();
-  }, []);
+  }, [type]); 
+  
 
   return (
     <div className="SelectCategory">
       <label>Category:</label>
       <select value={selected} onChange={(e) => setSelected(e.target.value)}>
+        <option value="">-- Choose Category --</option>
         {categories.map((cat) => (
           <option key={cat.id} value={cat.id.toString()}>
             {cat.name}
@@ -102,22 +127,6 @@ function SelectCategory({ selected, setSelected }: {selected: string; setSelecte
 }
 
 
-type TypeProps = {
-  type: "EXPENSE" | "EARNING";
-  setType: (t: "EXPENSE" | "EARNING") => void;
-};
-
-function SelectType({ type, setType }: TypeProps) {
-  return (
-    <div className="SelectType">
-      <label>Type:</label>
-      <select value={type} onChange={(e) => setType(e.target.value as "EXPENSE" | "EARNING")}>
-        <option value="EXPENSE">Expense</option>
-        <option value="EARNING">Earning</option>
-      </select>
-    </div>
-  );
-}
 
 function AddDescription({description, setDescription}: { description: string; setDescription: (value: string) => void }) {
   return (
@@ -154,7 +163,13 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
       },
     };
 
+    
+
     try {
+      if (!selectedCategory) {
+        throw new Error("You have to choose a category");
+      }
+
       const res = await fetch("/transactions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -170,6 +185,7 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
       alert("Transaction saved!");
     } catch (err) {
       alert(err);
+
     }
   };
 

@@ -27,6 +27,7 @@ public class TransactionController {
             Transaction saved = transactionService.createTransaction(transaction);
             return ResponseEntity.status(201).body(saved);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(400).build();
         }
     }
