@@ -1,9 +1,11 @@
 import React from "react";
+import { TransactionType } from "../types/TransactionType";
+import { Category } from "../types/Category";
 
-function CreateTransaction() {
+function CreateTransaction({ onSaved }: { onSaved: () => void }) {
 
   const [selectedCategory, setSelectedCategory] = React.useState<string>("");
-  const [type, setType] = React.useState<"EXPENSE" | "EARNING">("EXPENSE");
+  const [type, setType] = React.useState<TransactionType>("EXPENSE");
   const [amount, setAmount] = React.useState<number>(0);
   const [date, setDate] = React.useState<Date>(new Date())
   const [description, setDescription] = React.useState<string>("")
@@ -11,7 +13,7 @@ function CreateTransaction() {
   
 
   return (
-    <div className="CreateTransactionBox">
+    <div className="Box CreateTransactionBox">
       <h2>Create Transaction</h2>
       <AddAmount amount={amount} setAmount={setAmount} />
       <SelectType type={type} setType={setType} />
@@ -24,6 +26,7 @@ function CreateTransaction() {
         description={description}
         type={type}
         selectedCategory={selectedCategory}
+        onSaved={onSaved}
       />
     </div>
   );
@@ -46,15 +49,15 @@ function AddAmount({ amount, setAmount }: { amount: number; setAmount: (value: n
 }
 
 type TypeProps = {
-  type: "EXPENSE" | "EARNING";
-  setType: (t: "EXPENSE" | "EARNING") => void;
+  type: TransactionType;
+  setType: (t: TransactionType) => void;
 };
 
 function SelectType({ type, setType }: TypeProps) {
   return (
     <div className="SelectType">
       <label>Type:</label>
-      <select value={type} onChange={(e) => setType(e.target.value as "EXPENSE" | "EARNING")}>
+      <select value={type} onChange={(e) => setType(e.target.value as TransactionType)}>
         <option value="">-- Choose Type --</option>
         <option value="EXPENSE">Expense</option>
         <option value="EARNING">Earning</option>
@@ -82,15 +85,12 @@ function SelectDate({ date, setDate }: { date: Date; setDate: (value: Date) => v
 type CategoryProps = {
   selected: string;
   setSelected: (value: string) => void;
-  type: "EXPENSE" | "EARNING";
+  type: TransactionType;
 };
 
 function SelectCategory({ selected, setSelected, type}: CategoryProps) {
 
-  type Category = {
-    id: number;
-    name: string;
-  };
+  
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   React.useEffect(() => {
@@ -147,11 +147,12 @@ type SaveTransactionProps = {
   amount: number;
   date: Date;
   description: string;
-  type: "EXPENSE" | "EARNING";
+  type: TransactionType;
   selectedCategory: string;
+  onSaved: () => void;
 };
 
-function SaveTransactionButton({amount, date, description, type, selectedCategory}: SaveTransactionProps) {
+function SaveTransactionButton({amount, date, description, type, selectedCategory, onSaved}: SaveTransactionProps) {
   const saveTransaction = async () => {
     const transaction = {
       amount,
@@ -163,10 +164,8 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
       },
     };
 
-    
-
     try {
-      if (!selectedCategory) {
+      if (!selectedCategory || isNaN(parseInt(selectedCategory))) {
         throw new Error("You have to choose a category");
       }
 
@@ -180,12 +179,10 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
         throw new Error("Failed to save transaction");
       }
 
-      
-      
       alert("Transaction saved!");
+      onSaved(); 
     } catch (err) {
       alert(err);
-
     }
   };
 
@@ -195,5 +192,6 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
     </div>
   );
 }
+
 
 export default CreateTransaction;

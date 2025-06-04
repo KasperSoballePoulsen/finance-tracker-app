@@ -35,15 +35,21 @@ public class TransactionController {
 
 
     @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
+    public ResponseEntity<List<Transaction>> getTransactions(@RequestParam(required = false) String type) {
         try {
-            List<Transaction> transactions = transactionService.getAllTransactions();
+            List<Transaction> transactions;
+            if (type == null || type.equals("ALL")) {
+                transactions = transactionService.getAllTransactions();
+            } else {
+                transactions = transactionService.getTransactionsByType(type);
+            }
             return ResponseEntity.ok(transactions);
         } catch (Exception e) {
             return ResponseEntity.status(400).build();
         }
-
     }
+
+
 
 
     @GetMapping("/{id}")

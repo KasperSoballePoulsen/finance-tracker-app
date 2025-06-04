@@ -2,6 +2,7 @@ package com.example.backend.bll;
 
 import com.example.backend.dal.model.Category;
 import com.example.backend.dal.model.Transaction;
+import com.example.backend.dal.model.TransactionType;
 import com.example.backend.dal.repository.CategoryRepository;
 import com.example.backend.dal.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -59,4 +60,14 @@ public class TransactionService {
         }
         transactionRepository.deleteById(id);
     }
+
+    public List<Transaction> getTransactionsByType(String type) {
+        try {
+            TransactionType transactionType = TransactionType.valueOf(type);
+            return transactionRepository.findByType(transactionType);
+        } catch (IllegalArgumentException e) {
+            throw new NoSuchElementException("Invalid transaction type: " + type);
+        }
+    }
+
 }
