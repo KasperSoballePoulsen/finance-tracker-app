@@ -1,0 +1,22 @@
+.CreateTransactionBox {
+    max-width: 250px;
+} 
+
+.Box {
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.earning {
+    color: green;
+}
+  
+.expense {
+    color: red;
+}
+
+.ViewTransactions {
+    max-width: 400px;
+}
