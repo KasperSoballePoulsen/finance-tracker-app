@@ -21,7 +21,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             categoryRepository.save(new Category("Food", TransactionType.EXPENSE));
             categoryRepository.save(new Category("Transport", TransactionType.EXPENSE));
             categoryRepository.save(new Category("Job Salary", TransactionType.EARNING));
-            System.out.println("✅ Initialized default categories");
+
         }
     }
 }
