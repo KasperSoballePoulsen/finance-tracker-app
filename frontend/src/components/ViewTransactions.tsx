@@ -1,11 +1,9 @@
 import React from "react";
 import { Transaction } from "../types/Transaction";
 
-type Props = {
-  transactions: Transaction[];
-};
 
-function ViewTransactions({ transactions }: Props) {
+
+function ViewTransactions({transactions, onEditClick}: {transactions: Transaction[]; onEditClick: (t: Transaction) => void;}) {
   const [filter, setFilter] = React.useState<"ALL" | "EXPENSE" | "EARNING">("ALL");
 
   const filtered = transactions.filter((t) =>
@@ -48,12 +46,9 @@ function ViewTransactions({ transactions }: Props) {
 
       <ul className="TransactionList">
         {filtered.map((t) => (
-          <li
-            key={t.id}
-            className={t.type === "EARNING" ? "earning" : "expense"}
-          >
-            <strong>{t.amount} DKK</strong> – {t.date.slice(0, 10)} –{" "}
-            {t.category.name} – {t.description}
+          <li key={t.id} className={t.type === "EARNING" ? "earning" : "expense"}>
+            <strong>{t.amount} DKK</strong> – {t.date.slice(0, 10)} – {t.category.name} – {t.description}
+            <button onClick={() => onEditClick(t)}>Edit</button>
           </li>
         ))}
       </ul>

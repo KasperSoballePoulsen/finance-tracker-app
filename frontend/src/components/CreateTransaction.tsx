@@ -1,8 +1,15 @@
 import React from "react";
 import { TransactionType } from "../types/TransactionType";
 import { Category } from "../types/Category";
+import { Transaction } from "../types/Transaction";
 
-function CreateTransaction({ onSaved }: { onSaved: () => void }) {
+function CreateTransaction({
+  onSaved,
+  transaction,
+}: {
+  onSaved: () => void;
+  transaction: Transaction | null;
+}) {
 
   const [selectedCategory, setSelectedCategory] = React.useState<string>("");
   const [type, setType] = React.useState<TransactionType>("EXPENSE");
@@ -10,11 +17,19 @@ function CreateTransaction({ onSaved }: { onSaved: () => void }) {
   const [date, setDate] = React.useState<Date>(new Date())
   const [description, setDescription] = React.useState<string>("")
 
-  
+  React.useEffect(() => {
+    if (transaction) {
+      setAmount(transaction.amount);
+      setDate(new Date(transaction.date));
+      setDescription(transaction.description);
+      setType(transaction.type);
+      setSelectedCategory(transaction.category.id.toString());
+    }
+  }, [transaction]);
 
   return (
     <div className="Box CreateTransactionBox">
-      <h2>Create Transaction</h2>
+      <h2>{transaction ? "Update Transaction" : "Create Transaction"}</h2>
       <AddAmount amount={amount} setAmount={setAmount} />
       <SelectType type={type} setType={setType} />
       <SelectDate date={date} setDate={setDate}/>
@@ -27,6 +42,7 @@ function CreateTransaction({ onSaved }: { onSaved: () => void }) {
         type={type}
         selectedCategory={selectedCategory}
         onSaved={onSaved}
+        transaction={transaction}
       />
     </div>
   );
@@ -150,11 +166,12 @@ type SaveTransactionProps = {
   type: TransactionType;
   selectedCategory: string;
   onSaved: () => void;
+  transaction?: Transaction | null;
 };
 
-function SaveTransactionButton({amount, date, description, type, selectedCategory, onSaved}: SaveTransactionProps) {
+function SaveTransactionButton({amount, date, description, type, selectedCategory, onSaved, transaction}: SaveTransactionProps) {
   const saveTransaction = async () => {
-    const transaction = {
+    const transactionData = {
       amount,
       date: date.toISOString(),
       description,
@@ -163,24 +180,30 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
         id: parseInt(selectedCategory),
       },
     };
-
+  
     try {
       if (!selectedCategory || isNaN(parseInt(selectedCategory))) {
         throw new Error("You have to choose a category");
       }
-
-      const res = await fetch("/transactions", {
-        method: "POST",
+  
+      const url = transaction?.id
+        ? `/transactions/${transaction.id}`
+        : "/transactions";
+  
+      const method = transaction?.id ? "PUT" : "POST";
+  
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(transaction),
+        body: JSON.stringify(transactionData),
       });
-
+  
       if (!res.ok) {
         throw new Error("Failed to save transaction");
       }
-
+  
       alert("Transaction saved!");
-      onSaved(); 
+      onSaved();
     } catch (err) {
       alert(err);
     }
@@ -188,7 +211,9 @@ function SaveTransactionButton({amount, date, description, type, selectedCategor
 
   return (
     <div className="SaveTransactionButton">
-      <button onClick={saveTransaction}>Save Transaction</button>
+      <button onClick={saveTransaction}>
+        {transaction ? "Update Transaction" : "Save Transaction"}
+      </button>
     </div>
   );
 }
