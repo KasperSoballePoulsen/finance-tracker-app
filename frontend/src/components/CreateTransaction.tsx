@@ -74,7 +74,6 @@ function SelectType({ type, setType }: TypeProps) {
     <div className="SelectType">
       <label>Type:</label>
       <select value={type} onChange={(e) => setType(e.target.value as TransactionType)}>
-        <option value="">-- Choose Type --</option>
         <option value="EXPENSE">Expense</option>
         <option value="EARNING">Earning</option>
       </select>
@@ -105,11 +104,12 @@ type CategoryProps = {
 };
 
 function SelectCategory({ selected, setSelected, type}: CategoryProps) {
-
+  
   
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   React.useEffect(() => {
+    setSelected("");
     async function fetchCategories() {
       try {
         const res = await fetch(`/categories?type=${type}`, {
