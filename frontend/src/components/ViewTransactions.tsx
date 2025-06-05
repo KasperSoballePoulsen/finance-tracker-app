@@ -10,40 +10,32 @@ function ViewTransactions({transactions, onEditClick}: {transactions: Transactio
     filter === "ALL" ? true : t.type === filter
   );
 
+  const filterOptions: ("ALL" | "EXPENSE" | "EARNING")[] = ["ALL", "EXPENSE", "EARNING"];
+  const labels = {
+    ALL: "Show All",
+    EXPENSE: "Show Expenses",
+    EARNING: "Show Earnings",
+  };
+
   return (
     <div className="Box ViewTransactions">
       <h2>Transactions</h2>
 
       <div className="Filters">
-        <label>
-          <input
-            type="radio"
-            name="filter"
-            checked={filter === "ALL"}
-            onChange={() => setFilter("ALL")}
-          />
-          Show All
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="filter"
-            checked={filter === "EXPENSE"}
-            onChange={() => setFilter("EXPENSE")}
-          />
-          Show Expenses
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="filter"
-            checked={filter === "EARNING"}
-            onChange={() => setFilter("EARNING")}
-          />
-          Show Earnings
-        </label>
+        {filterOptions.map((option) => {
+          return (
+            <label key={option}>
+            <input
+              type="radio"
+              name="filter"
+              checked={filter === option}
+              onChange={() => setFilter(option)}
+            />
+            {labels[option]}
+            </label>
+          );
+        })}
       </div>
-
       <ul className="TransactionList">
         {filtered.map((t) => (
           <li key={t.id} className={t.type === "EARNING" ? "earning" : "expense"}>
