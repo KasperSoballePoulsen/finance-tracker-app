@@ -15,11 +15,11 @@
 
 
 .CreateTransactionBox {
-    max-width: 250px;
+    max-width: 270px;
 } 
 
 .Box {
-    border: 2px solid black;
+    border: 2px solid white;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
@@ -38,7 +38,7 @@
 }
 
 .ViewCategories {
-    max-width: 250px;
+    max-width: 270px;
 }
 
 .Filters label {
@@ -51,6 +51,33 @@
 .SelectDate,
 .SelectCategory,
 .AddDescription,
-.SaveTransactionButton {
+.SaveTransactionButton,
+.CategoryName, 
+.CategoryTypeRadios {
   margin-bottom: 10px;
 }
+
+.SummaryStatistics table {
+    width: 100%;
+    border-collapse: collapse;
+}
+  
+.SummaryStatistics th, .SummaryStatistics td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: right;
+}
+  
+.SummaryStatistics th:first-child, .SummaryStatistics td:first-child {
+    text-align: left;
+}
+
+body {
+    font-family: sans-serif;
+    padding: 2%;
+    background-color: rgb(13, 13, 76);
+    color: white;
+    
+}
+
+

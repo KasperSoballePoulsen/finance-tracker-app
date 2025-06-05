@@ -1,5 +1,6 @@
 package com.example.backend.bll;
 
+import com.example.backend.api.dto.SummaryDTO;
 import com.example.backend.dal.model.Category;
 import com.example.backend.dal.model.Transaction;
 import com.example.backend.dal.model.TransactionType;
@@ -7,8 +8,8 @@ import com.example.backend.dal.repository.CategoryRepository;
 import com.example.backend.dal.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class TransactionService {
@@ -69,5 +70,44 @@ public class TransactionService {
             throw new NoSuchElementException("Invalid transaction type: " + type);
         }
     }
+
+    public List<SummaryDTO> getSummaryStatistics(int year) {
+        List<Object[]> raw = transactionRepository.getSummaryStatistics(year);
+        Map<String, BigDecimal> earningsPerMonth = new HashMap<>();
+        Map<String, BigDecimal> expensesPerMonth = new HashMap<>();
+        List<SummaryDTO> result = new ArrayList<>();
+
+        for (Object[] row : raw) {
+            String month = (String) row[0];
+            String category = (String) row[1];
+            String type = (String) row[2];
+            BigDecimal total = (BigDecimal) row[3];
+
+            result.add(new SummaryDTO(month, category, type, total));
+
+            if ("EARNING".equalsIgnoreCase(type)) {
+                BigDecimal current = earningsPerMonth.getOrDefault(month, BigDecimal.ZERO);
+                earningsPerMonth.put(month, current.add(total));
+            } else if ("EXPENSE".equalsIgnoreCase(type)) {
+                BigDecimal current = expensesPerMonth.getOrDefault(month, BigDecimal.ZERO);
+                expensesPerMonth.put(month, current.add(total));
+            }
+        }
+
+        Set<String> allMonths = new HashSet<>();
+        allMonths.addAll(earningsPerMonth.keySet());
+        allMonths.addAll(expensesPerMonth.keySet());
+
+        for (String month : allMonths) {
+            BigDecimal earnings = earningsPerMonth.getOrDefault(month, BigDecimal.ZERO);
+            BigDecimal expenses = expensesPerMonth.getOrDefault(month, BigDecimal.ZERO);
+            BigDecimal balance = earnings.subtract(expenses);
+            result.add(new SummaryDTO(month, "TOTAL", "BALANCE", balance));
+        }
+
+        return result;
+    }
+
+
 
 }

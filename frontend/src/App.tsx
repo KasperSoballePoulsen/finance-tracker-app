@@ -4,6 +4,7 @@ import CreateTransaction from "./components/CreateTransaction";
 import ViewTransactions from "./components/ViewTransactions";
 import { Transaction } from "./types/Transaction";
 import ViewCategories from "./components/ViewCategories";
+import SummaryStatistics from "./components/SummaryStatistics";
 
 function App() {
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
@@ -23,22 +24,23 @@ function App() {
     <>
       <Header />
       <div className="MainLayout">
-  <div className="LeftColumn">
-    <CreateTransaction
-      onSaved={() => {
-        fetchTransactions();
-        setEditingTransaction(null);
-      }}
-      transaction={editingTransaction}
-    />
-    <ViewCategories />
-  </div>
+        <div className="LeftColumn">
+        <CreateTransaction
+          onSaved={() => {
+            fetchTransactions();
+            setEditingTransaction(null);
+          }}
+          transaction={editingTransaction}
+        />
+        <ViewCategories />
+        </div>
 
-  <ViewTransactions
-    transactions={transactions}
-    onEditClick={(t) => setEditingTransaction(t)}
-  />
-</div>
+        <ViewTransactions
+          transactions={transactions}
+          onEditClick={(t) => setEditingTransaction(t)}
+        />
+        <SummaryStatistics/>
+      </div>
     </>
   );
 }
