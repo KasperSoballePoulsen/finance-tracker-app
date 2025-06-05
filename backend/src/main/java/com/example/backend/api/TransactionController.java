@@ -1,5 +1,6 @@
 package com.example.backend.api;
 
+import com.example.backend.api.dto.SummaryDTO;
 import com.example.backend.bll.TransactionService;
 import com.example.backend.dal.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +92,19 @@ public class TransactionController {
             return ResponseEntity.status(400).build();
         }
     }
+
+
+    @GetMapping("/summary")
+    public ResponseEntity<List<SummaryDTO>> getSummaryStatistics(@RequestParam int year) {
+        try {
+            List<SummaryDTO> summary = transactionService.getSummaryStatistics(year);
+            return ResponseEntity.ok(summary);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
 }
 

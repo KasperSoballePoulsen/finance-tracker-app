@@ -17,8 +17,6 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    @OneToMany(mappedBy = "category")
-    private List<Transaction> transactions = new ArrayList<>();
 
     public Category() {
     }

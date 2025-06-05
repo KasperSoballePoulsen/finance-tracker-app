@@ -54,12 +54,15 @@ function ViewCategories() {
       <h2>Categories</h2>
 
       <div className="NewCategoryForm">
-        <input
-          type="text"
-          placeholder="Category name"
-          value={newCategoryName}
-          onChange={(e) => setNewCategoryName(e.target.value)}
-        />
+        <div className="CategoryName">
+          <label htmlFor="category-name-input">Category name:</label>
+          <input
+            type="text"
+            value={newCategoryName}
+            onChange={(e) => setNewCategoryName(e.target.value)}
+          />
+        </div>
+        
 
         <div className="CategoryTypeRadios">
           <label>
