@@ -9,18 +9,22 @@ import java.util.List;
 
 @Service
 public class CategoryService {
-    private final CategoryRepository repo;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository repo) {
-        this.repo = repo;
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     public List<Category> getAllCategories() {
-        return repo.findAll();
+        return categoryRepository.findAll();
     }
 
     public List<Category> getCategoriesByType(TransactionType type) {
-        List<Category> categories = repo.getCategoriesByType(type);
+        List<Category> categories = categoryRepository.getCategoriesByType(type);
         return categories;
+    }
+
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
     }
 }
