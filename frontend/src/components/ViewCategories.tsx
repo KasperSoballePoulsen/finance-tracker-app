@@ -43,7 +43,7 @@ function ViewCategories() {
 
       setNewCategoryName("");
       setNewCategoryType("EXPENSE");
-      fetchCategories(); // refresh the list
+      fetchCategories();
     } catch (err) {
       alert(err);
     }
