@@ -81,3 +81,10 @@ body {
 }
 
 
+#year-input {
+    margin-right: 10px;
+}
+
+.loadYear {
+    margin-bottom: 20px;
+}
