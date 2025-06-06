@@ -34,7 +34,7 @@
 }
 
 .ViewTransactions {
-    max-width: 550px;
+    max-width: 800px;
 }
 
 .ViewCategories {
@@ -87,4 +87,8 @@ body {
 
 .loadYear {
     margin-bottom: 20px;
+}
+
+#deleteBtn, #editBtn {
+    margin-left: 10px;
 }

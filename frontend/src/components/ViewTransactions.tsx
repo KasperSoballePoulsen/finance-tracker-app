@@ -3,7 +3,7 @@ import { Transaction } from "../types/Transaction";
 
 
 
-function ViewTransactions({transactions, onEditClick}: {transactions: Transaction[]; onEditClick: (t: Transaction) => void;}) {
+function ViewTransactions({transactions, onEditClick, onDeleteClick }: {transactions: Transaction[]; onEditClick: (t: Transaction) => void; onDeleteClick: (id: number) => void;}) {
   const [filter, setFilter] = React.useState<"ALL" | "EXPENSE" | "EARNING">("ALL");
 
   const filtered = transactions.filter((t) =>
@@ -38,10 +38,11 @@ function ViewTransactions({transactions, onEditClick}: {transactions: Transactio
       </div>
       <ul className="TransactionList">
         {filtered.map((t) => (
-          <li key={t.id} className={t.type === "EARNING" ? "earning" : "expense"}>
-            <strong>{t.amount} DKK</strong> – {t.date.slice(0, 10)} – {t.category.name} – {t.description}
-            <button onClick={() => onEditClick(t)}>Edit</button>
-          </li>
+        <li key={t.id} className={t.type === "EARNING" ? "earning" : "expense"}>
+          <strong>{t.amount} DKK</strong> – {t.date.slice(0, 10)} – {t.category.name} – {t.description}
+          <button id="editBtn" onClick={() => onEditClick(t)}>Edit</button>
+          <button id="deleteBtn" onClick={() => onDeleteClick(t.id)}>Delete</button>
+        </li>
         ))}
       </ul>
     </div>

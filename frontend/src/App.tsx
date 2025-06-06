@@ -20,6 +20,26 @@ function App() {
     fetchTransactions();
   }, []);
 
+  const handleEdit = (transaction: Transaction) => {
+    setEditingTransaction(transaction);
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`/transactions/${id}`, {
+        method: "DELETE",
+      });
+  
+      if (response.ok) {
+        setTransactions((prev) => prev.filter((t) => t.id !== id));
+      } else {
+        console.error("Failed to delete transaction. Status:", response.status);
+      }
+    } catch (err) {
+      console.error("Error deleting transaction:", err);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -36,8 +56,9 @@ function App() {
         </div>
 
         <ViewTransactions
-          transactions={transactions}
-          onEditClick={(t) => setEditingTransaction(t)}
+        transactions={transactions}
+        onEditClick={handleEdit}
+        onDeleteClick={handleDelete}
         />
         
       </div>
