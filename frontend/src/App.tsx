@@ -39,8 +39,9 @@ function App() {
           transactions={transactions}
           onEditClick={(t) => setEditingTransaction(t)}
         />
-        <SummaryStatistics/>
+        
       </div>
+      <SummaryStatistics/>
     </>
   );
 }

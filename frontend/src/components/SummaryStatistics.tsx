@@ -47,14 +47,14 @@ function SummaryStatistics() {
     <div className="Box SummaryStatistics">
       <h2>Summary Statistics</h2>
 
-      <div style={{ marginBottom: "1rem" }}>
+      <div className="loadYear">
         <label htmlFor="year-input">Year: </label>
         <input
           id="year-input"
           type="number"
           value={yearInput}
           onChange={(e) => setYearInput(e.target.value)}
-          style={{ marginRight: "0.5rem" }}
+          
         />
         <button onClick={handleLoadClick}>Load</button>
       </div>

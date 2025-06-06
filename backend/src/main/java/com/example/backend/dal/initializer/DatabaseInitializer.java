@@ -26,7 +26,6 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (categoryRepository.count() == 0 && transactionRepository.count() == 0) {
-            // Create categories
             Category food = categoryRepository.save(new Category("Food", TransactionType.EXPENSE));
             Category transport = categoryRepository.save(new Category("Transport", TransactionType.EXPENSE));
             Category rent = categoryRepository.save(new Category("Rent", TransactionType.EXPENSE));
@@ -38,10 +37,9 @@ public class DatabaseInitializer implements CommandLineRunner {
             Category freelance = categoryRepository.save(new Category("Freelance", TransactionType.EARNING));
             Category investment = categoryRepository.save(new Category("Investment", TransactionType.EARNING));
             Category gift = categoryRepository.save(new Category("Gift", TransactionType.EARNING));
-            Category other = categoryRepository.save(new Category("Other", TransactionType.EARNING));
             Category noEarning = categoryRepository.save(new Category("No Category", TransactionType.EARNING));
 
-            // Hardcoded transactions
+
             List<Transaction> transactions = List.of(
                     new Transaction(new BigDecimal("1000"), LocalDate.of(2024, 1, 15), "Groceries", TransactionType.EXPENSE, food),
                     new Transaction(new BigDecimal("60"), LocalDate.of(2024, 1, 20), "Bus pass", TransactionType.EXPENSE, transport),
@@ -53,7 +51,6 @@ public class DatabaseInitializer implements CommandLineRunner {
                     new Transaction(new BigDecimal("5000"), LocalDate.of(2024, 2, 15), "Freelance project", TransactionType.EARNING, freelance),
                     new Transaction(new BigDecimal("3000"), LocalDate.of(2024, 3, 10), "Stock dividends", TransactionType.EARNING, investment),
                     new Transaction(new BigDecimal("1500"), LocalDate.of(2024, 4, 1), "Birthday gift", TransactionType.EARNING, gift),
-                    new Transaction(new BigDecimal("500"), LocalDate.of(2024, 4, 3), "Other income", TransactionType.EARNING, other),
                     new Transaction(new BigDecimal("250"), LocalDate.of(2024, 4, 10), "Unknown source", TransactionType.EARNING, noEarning),
                     new Transaction(new BigDecimal("900"), LocalDate.of(2025, 1, 10), "Groceries", TransactionType.EXPENSE, food),
                     new Transaction(new BigDecimal("70"), LocalDate.of(2025, 1, 18), "Taxi", TransactionType.EXPENSE, transport),
@@ -65,8 +62,6 @@ public class DatabaseInitializer implements CommandLineRunner {
                     new Transaction(new BigDecimal("4000"), LocalDate.of(2025, 2, 20), "Contract job", TransactionType.EARNING, freelance),
                     new Transaction(new BigDecimal("2800"), LocalDate.of(2025, 3, 11), "Fund returns", TransactionType.EARNING, investment),
                     new Transaction(new BigDecimal("1200"), LocalDate.of(2025, 4, 2), "Cash gift", TransactionType.EARNING, gift),
-                    new Transaction(new BigDecimal("800"), LocalDate.of(2025, 4, 7), "Side job", TransactionType.EARNING, other),
-                    new Transaction(new BigDecimal("400"), LocalDate.of(2025, 4, 10), "Random earning", TransactionType.EARNING, noEarning),
                     new Transaction(new BigDecimal("1100"), LocalDate.of(2025, 5, 10), "Groceries", TransactionType.EXPENSE, food),
                     new Transaction(new BigDecimal("90"), LocalDate.of(2025, 5, 22), "Bus card", TransactionType.EXPENSE, transport),
                     new Transaction(new BigDecimal("8100"), LocalDate.of(2025, 6, 1), "Monthly rent", TransactionType.EXPENSE, rent),
