@@ -29,7 +29,7 @@ function SummaryStatistics() {
     }
   };
 
-  const months = Array.from(new Set(data.map((d) => d.month))).sort();
+  const months = Array.from(new Set(data.map((d) => d.month).filter((m) => m !== "YEARLY"))).sort();
   const earnings = Array.from(new Set(data.filter((d) => d.type === "EARNING").map((d) => d.category)));
   const expenses = Array.from(new Set(data.filter((d) => d.type === "EXPENSE").map((d) => d.category)));
 
@@ -43,6 +43,13 @@ function SummaryStatistics() {
     return match ? match.total.toFixed(2) : "0.00";
   };
 
+  const getYearlyTotal = () => {
+    const match = data.find((d) => d.month === "YEARLY" && d.category === "TOTAL" && d.type === "BALANCE");
+    return match ? match.total.toFixed(2) : null;
+  };
+
+  const yearlyTotal = getYearlyTotal();
+
   return (
     <div className="Box SummaryStatistics">
       <h2>Summary Statistics</h2>
@@ -54,7 +61,6 @@ function SummaryStatistics() {
           type="number"
           value={yearInput}
           onChange={(e) => setYearInput(e.target.value)}
-          
         />
         <button onClick={handleLoadClick}>Load</button>
       </div>
@@ -93,6 +99,12 @@ function SummaryStatistics() {
           </tr>
         </tbody>
       </table>
+
+      {yearlyTotal && (
+        <p style={{ marginTop: "20px", fontWeight: "bold" }}>
+          Total balance of the year: {yearlyTotal} DKK
+        </p>
+      )}
     </div>
   );
 }
