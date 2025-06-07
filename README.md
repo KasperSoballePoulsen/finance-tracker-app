@@ -20,6 +20,8 @@ A full-stack personal finance management application featuring a Java Spring Boo
 - Spring Boot
 - Spring Data JPA
 - H2 Database (for development and testing)
+- JUnit 5 (for unit testing)
+- Spring Boot Test
 
 ### Frontend
 - React
@@ -59,6 +61,26 @@ The backend server will start at http://localhost:8080.
 
 The frontend application will be available at http://localhost:5173.
 
+### Testing
+
+The project includes automated unit tests written using **JUnit 5** and **Spring Boot Test**.
+
+- `TransactionServiceTest`: Covers all transaction-related functionality.
+- `CategoryServiceTest`: Covers functionality related to category management.
+
+#### How to run the tests
+
+Run the following command from the `backend` folder:
+
+   ```bash
+   ./gradlew test
+   
+```
+If all tests pass, you should see:
+   ```bash
+   BUILD SUCCESSFUL
+```
+
 ### Project Structure
 ```bash
 finance-tracker-app/
@@ -93,7 +115,8 @@ finance-tracker-app/
 │       └── test/
 │           └── java/
 │               └── com/example/backend/
-│                   └── BackendApplicationTests.java
+│                   ├── CategoryServiceTest.java
+│                   └──TransactionServiceTest.java
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
