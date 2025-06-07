@@ -81,6 +81,27 @@ If all tests pass, you should see:
    BUILD SUCCESSFUL
 ```
 
+### H2 Database Console
+
+This application uses a **file-based H2 database** for development and testing. You can inspect the database via the H2 web console.
+
+#### Accessing the H2 Console
+
+1. Make sure the backend is running:
+
+   ```bash
+   ./gradlew bootRun
+   
+2. Open your browser and go to:
+http://localhost:8080/h2-console
+
+3. Use the following settings:
+- Driver Class: org.h2.Driver
+- JDBC URL: jdbc:h2:file:./data/backend
+- User Name: sa
+- Password: (leave blank)
+
+
 ### Project Structure
 ```bash
 finance-tracker-app/
