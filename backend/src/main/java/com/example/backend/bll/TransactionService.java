@@ -116,13 +116,19 @@ public class TransactionService {
         return result;
     }
 
-    private BigDecimal calculateSum(List<BigDecimal> numbersToSum) {
+    /**
+     * This method is made public only to allow unit testing.
+     * In production, it should be private.
+     */
+    public BigDecimal calculateSum(List<BigDecimal> numbersToSum) {
         BigDecimal result = BigDecimal.ZERO;
         for (BigDecimal number : numbersToSum) {
             result = result.add(number);
         }
         return result;
     }
+
+
 
 
 }

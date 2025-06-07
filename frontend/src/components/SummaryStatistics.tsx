@@ -50,6 +50,12 @@ function SummaryStatistics() {
 
   const yearlyTotal = getYearlyTotal();
 
+  const getMonthLabel = (monthStr: string) => {
+    const [year, month] = monthStr.split("-");
+    const date = new Date(Number(year), Number(month) - 1);
+    return date.toLocaleString("default", { month: "short" }); 
+  };
+
   return (
     <div className="Box SummaryStatistics">
       <h2>Summary Statistics</h2>
@@ -70,7 +76,7 @@ function SummaryStatistics() {
           <tr>
             <th>Category</th>
             {months.map((month) => (
-              <th key={month}>{month}</th>
+              <th key={month}>{getMonthLabel(month)}</th>
             ))}
           </tr>
         </thead>
