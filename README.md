@@ -9,8 +9,8 @@ A full-stack personal finance management application featuring a Java Spring Boo
 - **Filter by Type**: Easily switch between viewing all transactions, only expenses, or only earnings.
 - **Category Management**: Create your own custom income and expense categories.
 - **Summary Statistics**: Get a quick overview of your total earnings and expenses.
+- **Trend Charts**: Visualize earnings trends over time with dynamic charts using Recharts.
 - **Responsive UI**: Clean and intuitive interface that adapts to different screen sizes.
-
 
 
 ## Technologies Used
@@ -28,6 +28,7 @@ A full-stack personal finance management application featuring a Java Spring Boo
 - TypeScript
 - Vite
 - ESLint
+- Recharts
 
 ## Getting Started
 
@@ -61,14 +62,32 @@ The backend server will start at http://localhost:8080.
 
 The frontend application will be available at http://localhost:5173.
 
-### Testing
+## API Documentation (Swagger UI)
+
+This project uses **Swagger** (via Springdoc OpenAPI) to automatically generate interactive API documentation for the backend.
+
+#### Accessing Swagger UI
+
+1. Make sure the backend server is running:
+
+   ```bash
+   cd backend
+   ./gradlew bootRun
+
+2. Open your browser and navigate to:
+   
+  http://localhost:8080/swagger-ui.html
+
+From here, you can explore and test all available API endpoints directly in the browser.
+
+## Testing
 
 The project includes automated unit tests written using **JUnit 5** and **Spring Boot Test**.
 
 - `TransactionServiceTest`: Covers all transaction-related functionality.
 - `CategoryServiceTest`: Covers functionality related to category management.
 
-#### How to run the tests
+### How to run the tests
 
 Run the following command from the `backend` folder:
 
@@ -81,15 +100,16 @@ If all tests pass, you should see:
    BUILD SUCCESSFUL
 ```
 
-### H2 Database Console
+## H2 Database Console
 
 This application uses a **file-based H2 database** for development and testing. You can inspect the database via the H2 web console.
 
-#### Accessing the H2 Console
+### Accessing the H2 Console
 
 1. Make sure the backend is running:
 
    ```bash
+   cd backend
    ./gradlew bootRun
    
 2. Open your browser and go to:
@@ -102,7 +122,7 @@ http://localhost:8080/h2-console
 - Password: (leave blank)
 
 
-### Project Structure
+## Project Structure
 ```bash
 finance-tracker-app/
 ├── backend/
@@ -137,10 +157,11 @@ finance-tracker-app/
 │           └── java/
 │               └── com/example/backend/
 │                   ├── CategoryServiceTest.java
-│                   └──TransactionServiceTest.java
+│                   └── TransactionServiceTest.java
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── CategoryTrendChart.tsx
 │   │   │   ├── CreateTransaction.tsx
 │   │   │   ├── Header.tsx
 │   │   │   ├── SummaryStatistics.tsx
