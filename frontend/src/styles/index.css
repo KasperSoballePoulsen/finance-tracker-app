@@ -81,7 +81,7 @@ body {
 }
 
 
-#year-input {
+#year-input, #selectChartYear {
     margin-right: 10px;
 }
 
@@ -89,6 +89,15 @@ body {
     margin-bottom: 20px;
 }
 
-#deleteBtn, #editBtn {
+#deleteBtn, #editBtn, #loadChartBtn, #selectChartCategory {
     margin-left: 10px;
+}
+
+#balanceOfTheYear {
+    margin-top: 20px; 
+    font-weight: bold;
+}
+
+#monthlyTotal {
+     font-weight: bold;
 }
