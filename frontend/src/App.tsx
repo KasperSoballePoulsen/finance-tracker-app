@@ -5,6 +5,7 @@ import ViewTransactions from "./components/ViewTransactions";
 import { Transaction } from "./types/Transaction";
 import ViewCategories from "./components/ViewCategories";
 import SummaryStatistics from "./components/SummaryStatistics";
+import CategoryTrendChart from "./components/CategoryTrendChart";
 
 function App() {
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
@@ -63,6 +64,7 @@ function App() {
         
       </div>
       <SummaryStatistics/>
+      <CategoryTrendChart/>
     </>
   );
 }

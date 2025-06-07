@@ -97,7 +97,7 @@ function SummaryStatistics() {
               ))}
             </tr>
           ))}
-          <tr style={{ fontWeight: "bold" }}>
+          <tr id="monthlyTotal" >
             <td>Monthly Balance</td>
             {months.map((month) => (
               <td key={month}>{getTotalBalance(month)}</td>
@@ -107,7 +107,7 @@ function SummaryStatistics() {
       </table>
 
       {yearlyTotal && (
-        <p style={{ marginTop: "20px", fontWeight: "bold" }}>
+        <p id="balanceOfTheYear" >
           Total balance of the year: {yearlyTotal} DKK
         </p>
       )}
