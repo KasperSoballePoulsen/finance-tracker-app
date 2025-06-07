@@ -82,7 +82,7 @@ From here, you can explore and test all available API endpoints directly in the 
 
 ## Testing
 
-The project includes automated unit tests written using **JUnit 5** and **Spring Boot Test**.
+The project includes automated unit and integration tests written using **JUnit 5** and **Spring Boot Test**.
 
 - `TransactionServiceTest`: Covers all transaction-related functionality.
 - `CategoryServiceTest`: Covers functionality related to category management.
