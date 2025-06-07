@@ -98,16 +98,31 @@ public class TransactionService {
         allMonths.addAll(earningsPerMonth.keySet());
         allMonths.addAll(expensesPerMonth.keySet());
 
+        List<BigDecimal> monthlyBalances = new ArrayList<>();
+
         for (String month : allMonths) {
             BigDecimal earnings = earningsPerMonth.getOrDefault(month, BigDecimal.ZERO);
             BigDecimal expenses = expensesPerMonth.getOrDefault(month, BigDecimal.ZERO);
             BigDecimal balance = earnings.subtract(expenses);
             result.add(new SummaryDTO(month, "TOTAL", "BALANCE", balance));
+
+            monthlyBalances.add(balance);
         }
+
+
+        BigDecimal yearlyBalance = calculateSum(monthlyBalances);
+        result.add(new SummaryDTO("YEARLY", "TOTAL", "BALANCE", yearlyBalance));
 
         return result;
     }
 
+    private BigDecimal calculateSum(List<BigDecimal> numbersToSum) {
+        BigDecimal result = BigDecimal.ZERO;
+        for (BigDecimal number : numbersToSum) {
+            result = result.add(number);
+        }
+        return result;
+    }
 
 
 }
